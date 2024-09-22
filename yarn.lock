@@ -7564,6 +7564,19 @@
   resolved "https://registry.yarnpkg.com/@sec-ant/readable-stream/-/readable-stream-0.4.1.tgz#60de891bb126abfdc5410fdc6166aca065f10a0c"
   integrity sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==
 
+"@semantic-release/commit-analyzer@11.0.0":
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-11.0.0.tgz#824d4c04ebb6ffda9752c55f2b76f643fb09e0f4"
+  integrity sha512-uEXyf4Z0AWJuxI9TbSQP5kkIYqus1/E1NcmE7pIv6d6/m/5EJcNWAGR4FOo34vrV26FhEaRVkxFfYzp/M7BKIg==
+  dependencies:
+    conventional-changelog-angular "^7.0.0"
+    conventional-commits-filter "^4.0.0"
+    conventional-commits-parser "^5.0.0"
+    debug "^4.0.0"
+    import-from "^4.0.0"
+    lodash-es "^4.17.21"
+    micromatch "^4.0.2"
+
 "@semantic-release/commit-analyzer@^10.0.0":
   version "10.0.4"
   resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-10.0.4.tgz#e2770f341b75d8f19fe6b5b833e8c2e0de2b84de"
@@ -7574,19 +7587,6 @@
     conventional-commits-parser "^5.0.0"
     debug "^4.0.0"
     import-from "^4.0.0"
-    lodash-es "^4.17.21"
-    micromatch "^4.0.2"
-
-"@semantic-release/commit-analyzer@^12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@semantic-release/commit-analyzer/-/commit-analyzer-12.0.0.tgz#7219b05ab79a4303c99fc9cd0413d68881599270"
-  integrity sha512-qG+md5gdes+xa8zP7lIo1fWE17zRdO8yMCaxh9lyL65TQleoSv8WHHOqRURfghTytUh+NpkSyBprQ5hrkxOKVQ==
-  dependencies:
-    conventional-changelog-angular "^7.0.0"
-    conventional-commits-filter "^4.0.0"
-    conventional-commits-parser "^5.0.0"
-    debug "^4.0.0"
-    import-from-esm "^1.0.3"
     lodash-es "^4.17.21"
     micromatch "^4.0.2"
 
