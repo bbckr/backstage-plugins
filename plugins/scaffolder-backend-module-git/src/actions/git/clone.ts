@@ -90,12 +90,14 @@ export function createGitCloneAction(options: {
       const defaultBranch = await repository.getCurrentBranch();
 
       const shortCommit = toShortCommit(head);
-      ctx.logger.debug(`Found head commit ${shortCommit}`);
       ctx.output('head', shortCommit);
 
       const defaultBranchName = defaultBranch.shorthand();
-      ctx.logger.debug(`Found default branch ${defaultBranchName}`);
       ctx.output('defaultBranch', defaultBranchName);
+
+      ctx.logger.info(
+        `Cloned default branch ${defaultBranchName} at ${shortCommit.sha}`,
+      );
     },
   });
 }

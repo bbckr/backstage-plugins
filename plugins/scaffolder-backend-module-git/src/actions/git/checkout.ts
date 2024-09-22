@@ -65,14 +65,21 @@ export function createGitCheckoutAction() {
       const repository = await nodegit.Repository.open(localPath);
       const head = await repository.getHeadCommit();
       if (input.data.shouldCreate) {
+        ctx.logger.info(`Creating branch ${input.data.branchName}`);
         await repository.createBranch(input.data.branchName, head);
       }
 
+      ctx.logger.info(`Switching to branch ${input.data.branchName}`);
       const checkoutOptions = {
         checkoutStrategy: CheckoutStrategy[input.data.strategy],
       };
       await repository.checkoutBranch(input.data.branchName, checkoutOptions);
-      ctx.output('head', toShortCommit(head));
+
+      const shortCommit = toShortCommit(head);
+      ctx.output('head', shortCommit);
+      ctx.logger.info(
+        `Checkout out branch ${input.data.branchName} at ${shortCommit.sha}`,
+      );
     },
   });
 }
