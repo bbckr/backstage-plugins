@@ -45,21 +45,49 @@ spec:
         # strategy: 'safe' # optional
         # workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
+    - id: changes
+      name: Make some changes
+      action: fetch:plain
+      input:
+        url: ./templates/DEMO.md
+        targetPath: './DEMO.md'
+
     - id: add
       name: Add changes to the index
       action: git:add
+      # input:
+      # files: []
+      # workingDirectory: '.' # optional, relative to the scaffolder workspace path
+
+    - id: commit
+      name: Commit changes
+      action: git:commit
       input:
-        # files: []
-        # workingDirectory: '.' # optional, relative to the scaffolder workspace path
+        message: 'demo: test commit action in demo template'
+        # author:
+        #   name: ''
+        #   email: ''
+        # committer:
+        #   name: ''
+        #   email: ''
 
   output:
     text:
-      - title: Head commit
+      - title: Output
         content: |
+          ### Default branch head commit
           **sha**: ${{ steps['clone'].output.head.sha }}  
-          **message**: ${{ steps['clone'].output.head.message }}  
           **author.name**: ${{ steps['clone'].output.head.author.name }}  
           **author.email**: ${{ steps['clone'].output.head.author.email }}  
           **committer.name**: ${{ steps['clone'].output.head.committer.name }}  
           **committer.email**: ${{ steps['clone'].output.head.committer.email }}  
-          **date**: ${{ steps['clone'].output.head.date }}
+          **date**: ${{ steps['clone'].output.head.date }}  
+          **message**: ${{ steps['clone'].output.head.message }}  
+          ### Branch head commit
+          **sha**: ${{ steps['commit'].output.head.sha }}  
+          **author.name**: ${{ steps['commit'].output.head.author.name }}  
+          **author.email**: ${{ steps['commit'].output.head.author.email }}  
+          **committer.name**: ${{ steps['commit'].output.head.committer.name }}  
+          **committer.email**: ${{ steps['commit'].output.head.committer.email }}  
+          **date**: ${{ steps['commit'].output.head.date }}  
+          **message**: ${{ steps['commit'].output.head.message }}
