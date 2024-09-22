@@ -51,6 +51,7 @@ export function createGitCloneAction(options: {
       let cloneOptions: nodegit.CloneOptions | undefined = undefined;
 
       const { integrations } = options;
+      const host = parseHostFromUrl(input.data.repositoryUrl);
       const token = getToken(input.data.repositoryUrl, integrations);
       if (token) {
         const creds = nodegit.Cred.userpassPlaintextNew(token, 'x-oauth-basic');
@@ -66,11 +67,10 @@ export function createGitCloneAction(options: {
             },
           },
         };
+        ctx.logger.info(`Found token for host ${host}`);
       } else {
         ctx.logger.warn(
-          `No token found for host ${parseHostFromUrl(
-            input.data.repositoryUrl,
-          )}, check your integration config if this is unexpected`,
+          `No token found for host ${host}, check your integration config if this is unexpected`,
         );
       }
 
@@ -79,6 +79,8 @@ export function createGitCloneAction(options: {
         input.data.workingDirectory,
       );
 
+      ctx.logger.info(`Cloning repository to ${localPath}`);
+
       const repository = await nodegit.Clone(
         input.data.repositoryUrl,
         localPath,
@@ -86,8 +88,14 @@ export function createGitCloneAction(options: {
       );
       const head = await repository.getHeadCommit();
       const defaultBranch = await repository.getCurrentBranch();
-      ctx.output('head', toShortCommit(head));
-      ctx.output('defaultBranch', defaultBranch.shorthand());
+
+      const shortCommit = toShortCommit(head);
+      ctx.logger.debug(`Found head commit ${shortCommit}`);
+      ctx.output('head', shortCommit);
+
+      const defaultBranchName = defaultBranch.shorthand();
+      ctx.logger.debug(`Found default branch ${defaultBranchName}`);
+      ctx.output('defaultBranch', defaultBranchName);
     },
   });
 }
