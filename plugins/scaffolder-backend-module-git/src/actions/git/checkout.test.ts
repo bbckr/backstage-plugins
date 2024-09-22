@@ -40,7 +40,7 @@ jest.mock('@backstage/backend-plugin-api', () => ({
 }));
 
 afterEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 describe('createGitCheckoutAction', () => {

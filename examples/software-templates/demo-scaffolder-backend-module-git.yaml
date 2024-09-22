@@ -45,11 +45,12 @@ spec:
         # strategy: 'safe' # optional
         # workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
-    # - id: debug:wait
-    #   name: Wait for debugging
-    #   action: debug:wait
-    #   input:
-    #     minutes: 2
+    - id: add
+      name: Add changes to the index
+      action: git:add
+      input:
+        # files: []
+        # workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
   output:
     text:

@@ -34,7 +34,7 @@ jest.mock('nodegit', () => {
 });
 
 afterEach(() => {
-  jest.resetAllMocks();
+  jest.clearAllMocks();
 });
 
 describe('createGitCloneAction', () => {
