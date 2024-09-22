@@ -75,11 +75,11 @@ scaffolder:
 
 catalog:
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Resource, Location, Template]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    # - type: file
-    #   target: ../../examples/entities.yaml
+    - type: file
+      target: ../../examples/software-templates/demo-scaffolder-backend-module-git.yaml
 
     ## Uncomment these lines to add more example data
     # - type: url

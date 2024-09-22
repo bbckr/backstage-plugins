@@ -1,0 +1,64 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+
+metadata:
+  name: demo-scaffolder-backend-module-git
+  title: Demo the Scaffolder Backend Module with Git
+  description: scaffolder git template demo
+spec:
+  owner: backstage/scaffolder-backend
+  type: service
+
+  parameters:
+    - title: Fill in some steps
+      required:
+        - repositoryUrl
+        - branchName
+      properties:
+        repositoryUrl:
+          title: Repository Url
+          type: string
+          description: The remote repository URL. If the access is private, be sure to configure your integrations configuration.
+        branchName:
+          title: Branch Name
+          type: string
+          description: The name of the branch to checkout.
+        shouldCreate:
+          title: shouldCreate
+          type: boolean
+          description: If the branch doesn't exist and we need to create it before checking out.
+
+  steps:
+    - id: clone
+      name: Clone the repository
+      action: git:clone
+      input:
+        repositoryUrl: '${{ parameters.repositoryUrl }}'
+        # workingDirectory: '.' # optional, relative to the scaffolder workspace path
+
+    - id: checkout
+      name: Checkout the branch
+      action: git:checkout
+      input:
+        branchName: '${{ parameters.branchName }}'
+        shouldCreate: '${{ parameters.shouldCreate }}'
+        # strategy: 'safe' # optional
+        # workingDirectory: '.' # optional, relative to the scaffolder workspace path
+
+    # - id: debug:wait
+    #   name: Wait for debugging
+    #   action: debug:wait
+    #   input:
+    #     minutes: 2
+
+  output:
+    text:
+      - title: Head commit
+        content: |
+          **sha**: ${{ steps['clone'].output.head.sha }}  
+          **message**: ${{ steps['clone'].output.head.message }}  
+          **author.name**: ${{ steps['clone'].output.head.author.name }}  
+          **author.email**: ${{ steps['clone'].output.head.author.email }}  
+          **committer.name**: ${{ steps['clone'].output.head.committer.name }}  
+          **committer.email**: ${{ steps['clone'].output.head.committer.email }}  
+          **date**: ${{ steps['clone'].output.head.date }}  
