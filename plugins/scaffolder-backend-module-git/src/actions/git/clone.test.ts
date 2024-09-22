@@ -6,6 +6,9 @@ import { ScmIntegrations } from '@backstage/integration';
 import { ConfigReader } from '@backstage/config';
 
 jest.mock('nodegit', () => {
+  const Config = {
+    setString: jest.fn(),
+  };
   const Repository = {
     getHeadCommit: jest.fn().mockResolvedValue({
       sha: () => 'mocksha',
@@ -23,6 +26,7 @@ jest.mock('nodegit', () => {
     getCurrentBranch: jest.fn().mockResolvedValue({
       shorthand: () => 'main',
     }),
+    config: jest.fn().mockResolvedValue(Config),
   };
   const Clone = jest.fn().mockResolvedValue(Repository);
   return {
@@ -47,7 +51,7 @@ describe('createGitCloneAction', () => {
     getInitiatorCredentials: jest.fn(),
   };
 
-  it('should call action', async () => {
+  it('should clone repository', async () => {
     const mockCtx = {
       ...mockContext,
       workspacePath: `.test/${crypto.randomUUID()}`,
@@ -70,6 +74,13 @@ describe('createGitCloneAction', () => {
 
     const action = createGitCloneAction({ integrations: mockIntegrations });
     await action.handler(mockCtx);
+
+    expect(mockCtx.logger.info).toHaveBeenCalledWith(
+      'Using user.name Backstage Scaffolder',
+    );
+    expect(mockCtx.logger.info).toHaveBeenCalledWith(
+      'Using user.email scaffolder@backstage.io',
+    );
 
     expect(mockCtx.output).toHaveBeenCalledTimes(2);
     expect(mockCtx.output).toHaveBeenNthCalledWith(1, 'head', {

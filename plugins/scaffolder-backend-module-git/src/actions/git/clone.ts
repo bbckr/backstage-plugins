@@ -18,6 +18,20 @@ export function createGitCloneAction(options: {
       .string()
       .url()
       .describe('The URL of the repository to clone'),
+    repositoryConfig: z
+      .object({
+        userName: z.string().describe('The username to use for the repository'),
+        email: z
+          .string()
+          .email()
+          .describe('The password to use for the repository'),
+      })
+      .optional()
+      .default({
+        userName: 'Backstage Scaffolder',
+        email: 'scaffolder@backstage.io',
+      })
+      .describe('The local git configuration for the repository'),
     workingDirectory: z
       .string()
       .optional()
@@ -32,6 +46,10 @@ export function createGitCloneAction(options: {
 
   return createTemplateAction<{
     repositoryUrl: string;
+    repositoryConfig?: {
+      userName: string;
+      email: string;
+    };
     workingDirectory?: string;
   }>({
     id: 'git:clone',
@@ -86,6 +104,24 @@ export function createGitCloneAction(options: {
         localPath,
         cloneOptions,
       );
+
+      // Setup local git config
+      if (input.data.repositoryConfig) {
+        const config = await repository.config();
+        await config.setString(
+          'user.name',
+          input.data.repositoryConfig.userName,
+        );
+        ctx.logger.info(
+          `Using user.name ${input.data.repositoryConfig.userName}`,
+        );
+        await config.setString('user.email', input.data.repositoryConfig.email);
+        ctx.logger.info(
+          `Using user.email ${input.data.repositoryConfig.email}`,
+        );
+      }
+
+      // Get branch details for output
       const head = await repository.getHeadCommit();
       const defaultBranch = await repository.getCurrentBranch();
 
