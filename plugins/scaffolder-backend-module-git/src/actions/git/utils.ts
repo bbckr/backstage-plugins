@@ -1,5 +1,6 @@
 import { ScmIntegrationRegistry } from '@backstage/integration';
 import { z } from 'zod';
+import nodegit from 'nodegit';
 
 export function parseHostFromUrl(url: string): string {
   const urlObject = new URL(url);
@@ -15,6 +16,19 @@ export function getToken(
     integrations.gitlab.byHost(host) ?? integrations.github.byHost(host);
 
   return integrationConfig?.config.token;
+}
+
+export function getCredentialsCallback(
+  repositoryUrl: string,
+  integrations: ScmIntegrationRegistry,
+): Function {
+  const token = getToken(repositoryUrl, integrations);
+  const creds = token
+    ? nodegit.Cred.userpassPlaintextNew(token, 'x-oauth-basic')
+    : nodegit.Cred.defaultNew();
+  return () => {
+    return creds;
+  };
 }
 
 export function toShortCommit(commit: any) {

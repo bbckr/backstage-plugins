@@ -4,10 +4,9 @@ import nodegit from 'nodegit';
 import { z } from 'zod';
 import { ScmIntegrationRegistry } from '@backstage/integration';
 import {
-  getToken,
+  getCredentialsCallback,
   commitOutputSchema,
   toShortCommit,
-  parseHostFromUrl,
 } from './utils';
 
 export function createGitCloneAction(options: {
@@ -66,31 +65,20 @@ export function createGitCloneAction(options: {
         );
       }
 
-      let cloneOptions: nodegit.CloneOptions | undefined = undefined;
-
       const { integrations } = options;
-      const host = parseHostFromUrl(input.data.repositoryUrl);
-      const token = getToken(input.data.repositoryUrl, integrations);
-      if (token) {
-        const creds = nodegit.Cred.userpassPlaintextNew(token, 'x-oauth-basic');
-        cloneOptions = {
-          fetchOpts: {
-            callbacks: {
-              credentials: () => {
-                return creds;
-              },
-              certificateCheck: function () {
-                return 0;
-              },
+      const cloneOptions: nodegit.CloneOptions = {
+        fetchOpts: {
+          callbacks: {
+            credentials: getCredentialsCallback(
+              input.data.repositoryUrl,
+              integrations,
+            ),
+            certificateCheck: function () {
+              return 0;
             },
           },
-        };
-        ctx.logger.info(`Found token for host ${host}`);
-      } else {
-        ctx.logger.warn(
-          `No token found for host ${host}, check your integration config if this is unexpected`,
-        );
-      }
+        },
+      };
 
       const localPath = resolveSafeChildPath(
         ctx.workspacePath,
