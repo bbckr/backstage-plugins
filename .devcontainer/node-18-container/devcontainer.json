@@ -23,7 +23,11 @@
           "icon": "terminal-bash"
         }
       },
-      "extensions": ["Orta.vscode-jest", "ms-vscode.vscode-typescript-next", "github.vscode-github-actions"]
+      "extensions": [
+        "Orta.vscode-jest",
+        "ms-vscode.vscode-typescript-next",
+        "github.vscode-github-actions"
+      ]
     }
   },
 
