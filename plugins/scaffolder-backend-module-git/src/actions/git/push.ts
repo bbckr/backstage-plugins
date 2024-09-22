@@ -2,9 +2,18 @@ import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import nodegit from 'nodegit';
 import { z } from 'zod';
+import { getCredentialsCallback } from './utils';
+import { ScmIntegrationRegistry } from '@backstage/integration';
 
-export function createGitPushAction() {
+export function createGitPushAction(options: {
+  integrations: ScmIntegrationRegistry;
+}) {
   const inputSchema = z.object({
+    remoteName: z
+      .string()
+      .optional()
+      .default('origin')
+      .describe('The remote to push to'),
     workingDirectory: z
       .string()
       .optional()
@@ -13,6 +22,7 @@ export function createGitPushAction() {
   });
 
   return createTemplateAction<{
+    remoteName?: string;
     workingDirectory?: string;
   }>({
     id: 'git:push',
@@ -34,7 +44,21 @@ export function createGitPushAction() {
       );
 
       const repository = await nodegit.Repository.open(localPath);
-      // TODO: Implement push
-    }
+
+      ctx.logger.info(`Using remote ${input.data.remoteName}`);
+      const remote = await repository.getRemote(input.data.remoteName);
+      const remoteUrl = remote.url();
+      ctx.logger.info(`Remote found at ${remoteUrl}`);
+
+      const currentBranch = await repository.getCurrentBranch();
+      ctx.logger.info(`Pushing branch ${currentBranch.shorthand()}`);
+
+      const { integrations } = options;
+      await remote.push([`${currentBranch.name()}:${currentBranch.name()}`], {
+        callbacks: {
+          credentials: getCredentialsCallback(remoteUrl, integrations),
+        },
+      });
+    },
   });
 }

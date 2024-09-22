@@ -56,8 +56,8 @@ spec:
       name: Add changes to the index
       action: git:add
       # input:
-      # files: []
-      # workingDirectory: '.' # optional, relative to the scaffolder workspace path
+      #   files: []
+      #   workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
     - id: commit
       name: Commit changes
@@ -70,6 +70,14 @@ spec:
         # committer:
         #   name: ''
         #   email: ''
+
+    - id: push
+      name: Push changes to the remote repository
+      action: git:push
+      # input:
+      #   remote: ''
+      #   branch: ''
+      #   workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
   output:
     text:
