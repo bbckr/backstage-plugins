@@ -23,6 +23,7 @@ export const scaffolderModule = createBackendModule({
           actions.createGitCheckoutAction(),
           actions.createGitAddAction(),
           actions.createGitCommitAction(),
+          actions.createGitPushAction(),
         );
       },
     });
