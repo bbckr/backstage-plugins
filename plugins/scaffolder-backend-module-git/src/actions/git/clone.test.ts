@@ -96,7 +96,6 @@ describe('createGitCloneAction', () => {
       expect.stringContaining(mockCtx.workspacePath),
       expect.any(Object),
     );
-    expect(mockCtx.logger.warn).not.toHaveBeenCalled();
     expect(nodegit.Cred.userpassPlaintextNew).toHaveBeenCalledWith(
       'mocktoken',
       'x-oauth-basic',

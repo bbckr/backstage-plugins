@@ -53,7 +53,7 @@ describe('createGitCheckoutAction', () => {
     getInitiatorCredentials: jest.fn(),
   };
 
-  it('should call action', async () => {
+  it('should checkout a repository', async () => {
     const mockCtx = {
       ...mockContext,
       workspacePath: `.test/${crypto.randomUUID()}`,
