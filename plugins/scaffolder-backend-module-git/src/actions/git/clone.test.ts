@@ -5,16 +5,20 @@ import nodegit from 'nodegit';
 import { ScmIntegrations } from '@backstage/integration';
 import { ConfigReader } from '@backstage/config';
 
-const mockHead = 'mocksha';
-const mockDefaultBranch = 'main';
-
 jest.mock('nodegit', () => {
   const Repository = {
     getHeadCommit: jest.fn().mockResolvedValue({
-      sha: () => mockHead,
+      sha: () => 'mocksha',
+      author: () => ({ name: 'mockauthor', email: 'author@mock.com' }),
+      committer: () => ({
+        name: 'mockcommitter',
+        email: 'committer@mock.com',
+      }),
+      date: () => new Date('2024-01-01'),
+      message: () => 'mockmessage',
     }),
     getCurrentBranch: jest.fn().mockResolvedValue({
-      shorthand: () => mockDefaultBranch,
+      shorthand: () => 'main',
     }),
   };
   const Clone = jest.fn().mockResolvedValue(Repository);
@@ -65,15 +69,17 @@ describe('createGitCloneAction', () => {
     await action.handler(mockCtx);
 
     expect(mockCtx.output).toHaveBeenCalledTimes(2);
-    expect(mockCtx.output).toHaveBeenNthCalledWith(1, 'head', mockHead);
-    expect(mockCtx.output).toHaveBeenNthCalledWith(
-      2,
-      'defaultBranch',
-      mockDefaultBranch,
-    );
+    expect(mockCtx.output).toHaveBeenNthCalledWith(1, 'head', {
+      sha: 'mocksha',
+      message: 'mockmessage',
+      author: { name: 'mockauthor', email: 'author@mock.com' },
+      committer: { name: 'mockcommitter', email: 'committer@mock.com' },
+      date: '2024-01-01T00:00:00.000Z',
+    });
+    expect(mockCtx.output).toHaveBeenNthCalledWith(2, 'defaultBranch', 'main');
     expect(nodegit.Clone).toHaveBeenCalledWith(
       mockCtx.input.repositoryUrl,
-      expect.any(String),
+      expect.stringContaining(mockCtx.workspacePath),
       expect.any(Object),
     );
     expect(mockCtx.logger.warn).not.toHaveBeenCalled();

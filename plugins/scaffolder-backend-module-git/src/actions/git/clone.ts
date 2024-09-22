@@ -3,7 +3,12 @@ import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import nodegit from 'nodegit';
 import { z } from 'zod';
 import { ScmIntegrationRegistry } from '@backstage/integration';
-import { getToken, parseHostFromUrl } from './utils';
+import {
+  getToken,
+  commitOutputSchema,
+  toShortCommit,
+  parseHostFromUrl,
+} from './utils';
 
 export function createGitCloneAction(options: {
   integrations: ScmIntegrationRegistry;
@@ -16,12 +21,12 @@ export function createGitCloneAction(options: {
     workingDirectory: z
       .string()
       .optional()
-      .default('./')
+      .default('.')
       .describe('The directory to clone the repository into'),
   });
 
   const outputSchema = z.object({
-    head: z.string().describe('The head commit of the repository'),
+    head: commitOutputSchema,
     defaultBranch: z.string().describe('The default branch of the repository'),
   });
 
@@ -81,7 +86,7 @@ export function createGitCloneAction(options: {
       );
       const head = await repository.getHeadCommit();
       const defaultBranch = await repository.getCurrentBranch();
-      ctx.output('head', head.sha());
+      ctx.output('head', toShortCommit(head));
       ctx.output('defaultBranch', defaultBranch.shorthand());
     },
   });
