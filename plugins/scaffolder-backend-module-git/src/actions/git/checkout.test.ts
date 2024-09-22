@@ -7,10 +7,13 @@ jest.mock('nodegit', () => {
   const Repository = {
     getHeadCommit: jest.fn().mockResolvedValue({
       sha: () => 'mocksha',
-      author: () => ({ name: 'mockauthor', email: 'author@mock.com' }),
+      author: () => ({
+        name: () => 'mockauthor',
+        email: () => 'author@mock.com',
+      }),
       committer: () => ({
-        name: 'mockcommitter',
-        email: 'committer@mock.com',
+        name: () => 'mockcommitter',
+        email: () => 'committer@mock.com',
       }),
       date: () => new Date('2024-01-01'),
       message: () => 'mockmessage',

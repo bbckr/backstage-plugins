@@ -61,4 +61,4 @@ spec:
           **author.email**: ${{ steps['clone'].output.head.author.email }}  
           **committer.name**: ${{ steps['clone'].output.head.committer.name }}  
           **committer.email**: ${{ steps['clone'].output.head.committer.email }}  
-          **date**: ${{ steps['clone'].output.head.date }}  
+          **date**: ${{ steps['clone'].output.head.date }}

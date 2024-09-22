@@ -22,12 +22,12 @@ export function toShortCommit(commit: any) {
     sha: commit.sha(),
     message: commit.message(),
     author: {
-      name: commit.author().name,
-      email: commit.author().email,
+      name: commit.author().name(),
+      email: commit.author().email(),
     },
     committer: {
-      name: commit.committer().name,
-      email: commit.committer().email,
+      name: commit.committer().name(),
+      email: commit.committer().email(),
     },
     date: commit.date().toISOString(),
   };
