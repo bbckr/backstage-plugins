@@ -14,6 +14,10 @@ jobs:
         node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Install Kerberos libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libkrb5-dev
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -30,6 +34,10 @@ jobs:
         node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Install Kerberos libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libkrb5-dev
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -45,6 +53,10 @@ jobs:
         node-version: [18.x, 20.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Install Kerberos libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libkrb5-dev
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -62,6 +74,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Install Kerberos libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libkrb5-dev
       - name: Setup Node.js 20.x
         uses: actions/setup-node@v3
         with:
