@@ -4,7 +4,6 @@ about: Report an issue or bug with the project
 title: "\U0001F41E(fix): <add description>"
 labels: ''
 assignees: ''
-
 ---
 
 ## 🐞 Bug Description
@@ -14,6 +13,7 @@ assignees: ''
 ### 🔍 Steps to Reproduce
 
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '...'
 3. Scroll down to '...'

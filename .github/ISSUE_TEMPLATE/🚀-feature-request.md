@@ -4,7 +4,6 @@ about: Suggest a new feature or enhancement for the project
 title: "\U0001F680 (feat): <add description>"
 labels: enhancement
 assignees: ''
-
 ---
 
 ## ✨ Feature Description
