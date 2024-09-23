@@ -66,7 +66,10 @@
         "@semantic-release/commit-analyzer",
         {
           "releaseRules": [
-            { "type": "docs", "release": "patch" }
+            {
+              "type": "docs",
+              "release": "patch"
+            }
           ]
         }
       ],
