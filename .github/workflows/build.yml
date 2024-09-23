@@ -87,7 +87,7 @@ jobs:
       - run: yarn install
       - run: yarn tsc
       - run: yarn backstage-cli repo build
-      - run: yarn add --dev conventional-changelog-conventionalcommits @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/github @qiwi/multi-semantic-release -W
+      - run: yarn add --dev conventional-changelog-conventionalcommits@4.1.0 @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/npm @semantic-release/github @qiwi/multi-semantic-release -W
       - run: yarn multi-semantic-release --ignore-private-packages --dry-run
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
