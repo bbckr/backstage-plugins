@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
-  "name": "Node.js",
+  "name": "Node.js 20.x",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "node:20.17",
 
@@ -23,7 +23,11 @@
           "icon": "terminal-bash"
         }
       },
-      "extensions": ["Orta.vscode-jest", "ms-vscode.vscode-typescript-next"]
+      "extensions": [
+        "Orta.vscode-jest",
+        "ms-vscode.vscode-typescript-next",
+        "github.vscode-github-actions"
+      ]
     }
   },
 
