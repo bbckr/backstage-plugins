@@ -26,6 +26,7 @@ yarn install
 ## Testing
 
 Run the following command:
+
 ```sh
 yarn test
 ```
@@ -35,6 +36,7 @@ or if you are using VSCode, you can use the [Jest Extension](https://marketplace
 ## Demoing the plugins
 
 Run the following command:
+
 ```sh
 yarn dev
 ```

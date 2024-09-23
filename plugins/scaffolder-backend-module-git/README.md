@@ -2,7 +2,6 @@
 
 ![npm version](https://img.shields.io/npm/v/@bbckr/backstage-plugin-scaffolder-backend-module-git) ![license](https://img.shields.io/npm/l/@bbckr/backstage-plugin-scaffolder-backend-module-git) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bbckr/backstage-plugins/build.yml?branch=main)
 
-
 This plugin allows you to use Git operations such as cloning, committing, and pushing directly from your scaffolder workflows.
 
 An example template can be found [here](examples/software-templates/demo-scaffolder-backend-module-git.yaml).
@@ -10,11 +9,13 @@ An example template can be found [here](examples/software-templates/demo-scaffol
 ## Installation
 
 In the repository root of your Backstage project, run:
+
 ```sh
 yarn add --cwd packages/backend @seatgeek/backstage-plugin-scaffolder-backend-module-hcl
 ```
 
 Lastly, import the package into the backend:
+
 ```js
 // packages/backend/src/index.ts
 const backend = createBackend();
@@ -39,7 +40,7 @@ spec:
       name: Clone a Git Repository
       action: git:clone
       input:
-        repositoryUrl: https://github.com/my-org/my-repo.git  # required
+        repositoryUrl: https://github.com/my-org/my-repo.git # required
         # repositoryConfig: # optional
         #   userName: John Doe
         #   email: john@doe.com

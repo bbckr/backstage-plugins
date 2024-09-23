@@ -8,6 +8,5 @@ If you are looking to demo the collection, check out the [Local Development](./d
 
 ## Available Plugins
 
-* **Scaffolder Backend Git Modules**: This plugin allows you to use Git operations such as cloning, committing, and pushing directly from your scaffolder workflows.
-  * [plugins/scaffolder-backend-module-git](./plugins/scaffolder-backend-module-git)
-
+- **Scaffolder Backend Git Modules**: This plugin allows you to use Git operations such as cloning, committing, and pushing directly from your scaffolder workflows.
+  - [plugins/scaffolder-backend-module-git](./plugins/scaffolder-backend-module-git)
