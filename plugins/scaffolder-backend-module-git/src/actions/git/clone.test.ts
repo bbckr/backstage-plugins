@@ -54,7 +54,7 @@ describe('createGitCloneAction', () => {
   it('should clone repository', async () => {
     const mockCtx = {
       ...mockContext,
-      workspacePath: `.test/${crypto.randomUUID()}`,
+      workspacePath: '.test',
       input: {
         repositoryUrl: 'https://github.com/bbckr/backstage-plugins.git',
       },

@@ -56,7 +56,7 @@ describe('createGitCheckoutAction', () => {
   it('should checkout a repository', async () => {
     const mockCtx = {
       ...mockContext,
-      workspacePath: `.test/${crypto.randomUUID()}`,
+      workspacePath: '.test',
       input: {
         branchName: 'my-new-branch',
         shouldCreate: true,

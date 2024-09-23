@@ -73,9 +73,6 @@ export function createGitCloneAction(options: {
               input.data.repositoryUrl,
               integrations,
             ),
-            certificateCheck: function () {
-              return 0;
-            },
           },
         },
       };
