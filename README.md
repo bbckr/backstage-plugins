@@ -1,6 +1,6 @@
 # Backstage Plugins by bbckr
 
-![license](https://img.shields.io/npm/l/@bbckr/backstage-plugin-scaffolder-backend-module-git) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bbckr/backstage-plugins/build.yml?branch=main)
+![license](https://img.shields.io/npm/l/@bbckr/backstage-plugin-scaffolder-backend-module-git) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bbckr/backstage-plugins/build.yml?branch=main) ![Codecov](https://codecov.io/gh/bbckr/backstage-plugins/branch/main/graph/badge.svg)
 
 This repository contains a collection of plugins designed to enhance your Backstage instance with new functionality. Below is an overview of the available plugins, each with a brief description and a link to explore further.
 

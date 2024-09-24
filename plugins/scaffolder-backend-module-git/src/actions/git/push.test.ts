@@ -81,8 +81,8 @@ describe('createGitCloneAction', () => {
     );
 
     expect(nodegit.Cred.userpassPlaintextNew).toHaveBeenCalledWith(
+      'oauth2',
       'mocktoken',
-      'x-oauth-basic',
     );
   });
 });
