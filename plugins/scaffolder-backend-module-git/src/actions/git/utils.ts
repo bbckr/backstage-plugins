@@ -24,7 +24,7 @@ export function getCredentialsCallback(
 ): Function {
   const token = getToken(repositoryUrl, integrations);
   const creds = token
-    ? nodegit.Cred.userpassPlaintextNew(token, 'x-oauth-basic')
+    ? nodegit.Cred.userpassPlaintextNew('oauth2', token)
     : nodegit.Cred.defaultNew();
   return () => {
     return creds;

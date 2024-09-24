@@ -23,9 +23,10 @@ const backend = createBackend();
 backend.add(import('@bbckr/backstage-plugin-scaffolder-backend-module-git'));
 ```
 
-Optionally, you can configure authentication through the [Integrations Config](https://backstage.io/docs/integrations/). If you try to clone a private repository, the plugin will match the host against the integrations configuration to pull token it needs for auth.
+Optionally, you can configure authentication through the [Backstage Integrations Config](https://backstage.io/docs/integrations/). If you try to clone a private repository, the plugin will match the host against the config to map the matching token.
 
 ```yaml
+# app-config.yaml
 integrations:
   github:
     - host: github.com
@@ -33,11 +34,9 @@ integrations:
   gitlab:
     - host: gitlab.com
       token: ${GITLAB_TOKEN}
-    - host: gitlab.example.com
-      token: ${GITLAB_EXAMPLE_TOKEN}
 ```
 
-Now the actions should be registered, and you can use them in your software templates.
+Now the actions are registered and can be used in your software templates.
 
 ## Actions
 
