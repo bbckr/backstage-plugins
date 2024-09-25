@@ -1,4 +1,8 @@
-import { ScmIntegrationRegistry } from '@backstage/integration';
+import {
+  GithubIntegration,
+  GitLabIntegration,
+  ScmIntegrationRegistry,
+} from '@backstage/integration';
 import { z } from 'zod';
 import nodegit from 'nodegit';
 
@@ -7,22 +11,23 @@ export function parseHostFromUrl(url: string): string {
   return urlObject.host;
 }
 
-export function getToken(
+export function getIntegration(
   repositoryUrl: string,
   integrations: ScmIntegrationRegistry,
-): string | undefined {
+): GitLabIntegration | GithubIntegration | undefined {
   const host = parseHostFromUrl(repositoryUrl);
-  const integrationConfig =
-    integrations.gitlab.byHost(host) ?? integrations.github.byHost(host);
-
-  return integrationConfig?.config.token;
+  return integrations.gitlab.byHost(host) ?? integrations.github.byHost(host);
 }
 
+export type UserInfo = {
+  userName: string | undefined;
+  email: string | undefined;
+};
+
 export function getCredentialsCallback(
-  repositoryUrl: string,
-  integrations: ScmIntegrationRegistry,
+  integration: GitLabIntegration | GithubIntegration | undefined,
 ): Function {
-  const token = getToken(repositoryUrl, integrations);
+  const token = integration?.config?.token;
   const creds = token
     ? nodegit.Cred.userpassPlaintextNew('oauth2', token)
     : nodegit.Cred.defaultNew();

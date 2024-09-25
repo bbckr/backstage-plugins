@@ -2,12 +2,19 @@ import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import nodegit from 'nodegit';
 import { z } from 'zod';
-import { ScmIntegrationRegistry } from '@backstage/integration';
 import {
+  GithubIntegration,
+  GitLabIntegration,
+  ScmIntegrationRegistry,
+} from '@backstage/integration';
+import {
+  getIntegration,
   getCredentialsCallback,
   commitOutputSchema,
   toShortCommit,
+  UserInfo,
 } from './utils';
+import { initScmIntegrationClient } from '../../integration';
 
 export function createGitCloneAction(options: {
   integrations: ScmIntegrationRegistry;
@@ -26,10 +33,6 @@ export function createGitCloneAction(options: {
           .describe('The password to use for the repository'),
       })
       .optional()
-      .default({
-        userName: 'Backstage Scaffolder',
-        email: 'scaffolder@backstage.io',
-      })
       .describe('The local git configuration for the repository'),
     workingDirectory: z
       .string()
@@ -65,14 +68,14 @@ export function createGitCloneAction(options: {
         );
       }
 
-      const { integrations } = options;
+      const integration = getIntegration(
+        input.data.repositoryUrl,
+        options.integrations,
+      );
       const cloneOptions: nodegit.CloneOptions = {
         fetchOpts: {
           callbacks: {
-            credentials: getCredentialsCallback(
-              input.data.repositoryUrl,
-              integrations,
-            ),
+            credentials: getCredentialsCallback(integration),
           },
         },
       };
@@ -91,20 +94,14 @@ export function createGitCloneAction(options: {
       );
 
       // Setup local git config
-      if (input.data.repositoryConfig) {
-        const config = await repository.config();
-        await config.setString(
-          'user.name',
-          input.data.repositoryConfig.userName,
-        );
-        ctx.logger.info(
-          `Using user.name ${input.data.repositoryConfig.userName}`,
-        );
-        await config.setString('user.email', input.data.repositoryConfig.email);
-        ctx.logger.info(
-          `Using user.email ${input.data.repositoryConfig.email}`,
-        );
-      }
+      const gitUserInfo = await setupGitConfig(
+        repository,
+        integration,
+        input.data.repositoryConfig,
+      );
+      ctx.logger.info(
+        `Git config set with '${gitUserInfo.userName} <${gitUserInfo.email}>'`,
+      );
 
       // Get branch details for output
       const head = await repository.getHeadCommit();
@@ -121,4 +118,37 @@ export function createGitCloneAction(options: {
       );
     },
   });
+}
+
+async function setupGitConfig(
+  repository: nodegit.Repository,
+  integration: GitLabIntegration | GithubIntegration | undefined,
+  repositoryConfig: UserInfo | undefined,
+): Promise<UserInfo> {
+  let gitUserName = repositoryConfig?.userName;
+  let gitUserEmail = repositoryConfig?.email;
+
+  const gitConfig = await repository.config();
+
+  // if a repository config was not provided, try to look into the user info
+  // associated with the token used in the integration
+  if (!repositoryConfig && integration) {
+    const client = initScmIntegrationClient(integration);
+    const userInfo = await client.getUserInfo();
+    gitUserName = userInfo.userName;
+    gitUserEmail = userInfo.email;
+  }
+
+  if (!gitUserName || !gitUserEmail) {
+    throw new Error('No git user info found');
+  }
+
+  await gitConfig.setString('user.name', gitUserName);
+
+  await gitConfig.setString('user.email', gitUserEmail);
+
+  return {
+    userName: gitUserName,
+    email: gitUserEmail,
+  };
 }

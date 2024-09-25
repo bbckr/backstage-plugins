@@ -2,7 +2,7 @@ import { resolveSafeChildPath } from '@backstage/backend-plugin-api';
 import { createTemplateAction } from '@backstage/plugin-scaffolder-node';
 import nodegit from 'nodegit';
 import { z } from 'zod';
-import { getCredentialsCallback } from './utils';
+import { getCredentialsCallback, getIntegration } from './utils';
 import { ScmIntegrationRegistry } from '@backstage/integration';
 
 export function createGitPushAction(options: {
@@ -53,10 +53,10 @@ export function createGitPushAction(options: {
       const currentBranch = await repository.getCurrentBranch();
       ctx.logger.info(`Pushing branch ${currentBranch.shorthand()}`);
 
-      const { integrations } = options;
+      const integration = getIntegration(remoteUrl, options.integrations);
       await remote.push([`${currentBranch.name()}:${currentBranch.name()}`], {
         callbacks: {
-          credentials: getCredentialsCallback(remoteUrl, integrations),
+          credentials: getCredentialsCallback(integration),
         },
       });
     },
