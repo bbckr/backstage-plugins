@@ -27,7 +27,7 @@ jest.mock('@backstage/backend-plugin-api', () => ({
   }),
 }));
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks();
 });
 

@@ -33,7 +33,7 @@ jest.mock('nodegit', () => {
   };
 });
 
-afterEach(() => {
+beforeEach(() => {
   jest.clearAllMocks();
 });
 
