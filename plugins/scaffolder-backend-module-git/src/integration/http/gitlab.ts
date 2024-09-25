@@ -3,6 +3,17 @@ type User = {
   email: string;
 };
 
+function getAuthorizationHeader(token: string): Record<string, string> {
+  if (token.startsWith('glpat-')) {
+    return {
+      'Private-Token': token,
+    };
+  }
+  return {
+    Authorization: `Bearer ${token}`,
+  };
+}
+
 export class GitLabHttpClient {
   private token: string;
   private baseUrl: string;
@@ -15,7 +26,7 @@ export class GitLabHttpClient {
   async getUser(): Promise<User> {
     const response = await fetch(`${this.baseUrl}/user`, {
       headers: {
-        Authorization: `Private-Token ${this.token}`,
+        ...getAuthorizationHeader(this.token),
         Accept: 'application/json',
       },
     });
