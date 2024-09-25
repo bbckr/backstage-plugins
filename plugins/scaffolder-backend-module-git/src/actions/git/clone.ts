@@ -30,10 +30,12 @@ export function createGitCloneAction(options: {
         email: z
           .string()
           .email()
-          .describe('The password to use for the repository'),
+          .describe('The email to use for the repository'),
       })
       .optional()
-      .describe('The local git configuration for the repository'),
+      .describe(
+        'The local git configuration for the repository. If not provided, the user info associated to the matched integration token will be used',
+      ),
     workingDirectory: z
       .string()
       .optional()

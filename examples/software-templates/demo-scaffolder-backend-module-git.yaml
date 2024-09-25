@@ -34,6 +34,9 @@ spec:
       action: git:clone
       input:
         repositoryUrl: '${{ parameters.repositoryUrl }}'
+        # repositoryConfig: # optional, will default to user info associated with the token if available
+        #   userName: ''
+        #   email: ''
         # workingDirectory: '.' # optional, relative to the scaffolder workspace path
 
     - id: checkout
