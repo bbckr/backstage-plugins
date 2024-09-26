@@ -15,7 +15,7 @@ export class GithubIntegrationClient implements ScmIntegrationClient {
 
     if (!email) {
       const emails = await this.client.getEmails();
-      email = emails.find(email => email.primary)?.email;
+      email = emails.find(val => val.primary)?.email;
     }
 
     return {
